@@ -3,7 +3,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "repository": "pekala/monorepo-test",
+  "repository": "pekala/kuiper-belt",
   "dependencies": {
     "@octokit/app": "^4.1.0",
     "@octokit/rest": "^16.28.7",

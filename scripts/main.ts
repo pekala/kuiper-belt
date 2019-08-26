@@ -1,9 +1,10 @@
-import { plugins, applyPlugins, parse } from "parse-commit-message";
+import { plugins, applyPlugins, parse, Commit } from "parse-commit-message";
 import getRawCommit from "./get-raw-commit";
 import getAffectedFiles from "./get-affected-files";
 import getAffectedPkgs from "./get-affected-pkgs";
 import bumpPkgVersions from "./bump-pkg-version";
-import { Increment } from "types";
+import createGithubRelease from "./create-github-release";
+import { Increment, CommitDescription } from "types";
 
 const BUMPS: Increment[] = [false, "patch", "minor", "major"];
 
@@ -34,7 +35,7 @@ async function* walkCommits() {
 
 export async function run() {
   let byPkg: {
-    [pkgDir: string]: { commits: any[]; increment: Increment };
+    [pkgDir: string]: { commits: CommitDescription[]; increment: Increment };
   } = {};
 
   for await (let data of walkCommits()) {
@@ -53,7 +54,8 @@ export async function run() {
   }
 
   for await (let pkgDir of Object.keys(byPkg)) {
-    await bumpPkgVersions(pkgDir, byPkg[pkgDir].increment);
+    const tag = await bumpPkgVersions(pkgDir, byPkg[pkgDir].increment);
+    await createGithubRelease(tag, byPkg[pkgDir].commits);
   }
 
   return byPkg;

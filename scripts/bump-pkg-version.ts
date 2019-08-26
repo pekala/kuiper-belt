@@ -13,7 +13,7 @@ export default async function bumpPkgVersion(
     return;
   }
   const pkgName = await getPkgName(pkgDir);
-  await execa("yarn", ["version", `--${increment}`], {
+  await execa("yarn", ["publish", `--${increment}`], {
     cwd: path.resolve(process.cwd(), pkgDir),
     env: {
       YARN_VERSION_GIT_MESSAGE: `chore(release): ${pkgName}@v%s`,
@@ -26,4 +26,10 @@ export default async function bumpPkgVersion(
     "--follow-tags",
     `https://x-access-token:${accessToken}@github.com/${pkgJSON.repository}.git`
   ]);
+  const { stdout: tag } = await execa("git", [
+    "describe",
+    "--abbrev=0",
+    "--tags"
+  ]);
+  return tag;
 }
