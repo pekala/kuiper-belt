@@ -1,6 +1,6 @@
 {
   "name": "@pekala/pkg-a",
-  "version": "14.0.0",
+  "version": "15.0.0",
   "main": "index.js",
   "license": "MIT",
   "repository": {
