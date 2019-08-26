@@ -1,6 +1,13 @@
 {
   "name": "@pekala/pkg-a",
-  "version": "12.0.0",
+  "version": "14.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/pekala/kuiper-belt.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
 }
